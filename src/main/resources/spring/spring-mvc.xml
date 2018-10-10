@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+">
+    <!--扫描web层的注解类,以下注解是为了扫描这个注解：@Controller-->
+    <context:component-scan base-package="com.qf.admin.web"/>
+    <!--@RequestMapping @ResponseBody jackson转换成JSON-->
+    <mvc:annotation-driven/>
+    <!--上传解析器-->
+    <!--如果添加如下这一段代码的时候，必须要依赖commons-fileupload-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding">
+            <value>UTF-8</value>
+        </property>
+        <property name="maxUploadSize">
+            <!-- 10M -->
+            <value>10485760</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+    </bean>
+    <!--配置视图解析器 Controller  hello(){return "index"}  转发：/WEB-INF/jsp/index.jsp -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--静态资源放行，凡是页面上访问css js images这些静态文件时候，都不经过controller-->
+    <!--url路径如下：http://localhost:81/manager/css/hello.css-->
+    <!--静态资源放行：http://localhost:81/manager/css/hello.css本来是要经过contrller,但是配置了这句话，配置完了以后，直接去寻找webapp/css/hello.css-->
+    <!--<mvc:resources mapping="/static/**" location="/static/"/>-->
+    <!--<mvc:resources mapping="/lib/**" location="/lib/"/>-->
+</beans>
