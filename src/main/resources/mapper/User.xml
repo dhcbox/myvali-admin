@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.admin.dao.UserDao">
+    <!--带条件查询出用户列表-->
+    <select id="listUsers" resultType="User">
+        select *
+        from user
+        <where>
+            <if test="search != null and search != '' ">
+                username like '%${search}%'
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+    <!--带条件查询出用户数量-->
+    <select id="countUsers" resultType="_long">
+        select count(1)
+        from user
+        <where>
+            <if test="search != null and search != '' ">
+                username like '%${search}%'
+            </if>
+        </where>
+    </select>
+
+    <!--根据主键删除用户-->
+    <delete id="removeById" parameterType="_int">
+        delete from user
+        where id=#{id}
+    </delete>
+</mapper>

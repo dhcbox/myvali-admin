@@ -40,6 +40,6 @@
     <!--静态资源放行，凡是页面上访问css js images这些静态文件时候，都不经过controller-->
     <!--url路径如下：http://localhost:81/manager/css/hello.css-->
     <!--静态资源放行：http://localhost:81/manager/css/hello.css本来是要经过contrller,但是配置了这句话，配置完了以后，直接去寻找webapp/css/hello.css-->
-    <!--<mvc:resources mapping="/static/**" location="/static/"/>-->
-    <!--<mvc:resources mapping="/lib/**" location="/lib/"/>-->
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
 </beans>
