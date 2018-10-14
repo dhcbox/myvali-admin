@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,11 +33,49 @@ public class UserServiceImpl implements UserService {
         return jo;
     }
 
+    @Transactional
     @Override
     public int removeById(int id) {
         int i = 0;
         try {
             i = userDao.removeById(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @Transactional
+    @Override
+    public int saveUser(User user) {
+        int i = 0;
+        try {
+            i = userDao.saveUser(user);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @Override
+    public User listUserById(int id) {
+        User user = null;
+        try {
+            user = userDao.listUserById(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public int updateUser(User user) {
+        int i = 0;
+        try {
+            i = userDao.updateUser(user);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();

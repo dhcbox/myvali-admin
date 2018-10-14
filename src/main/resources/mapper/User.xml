@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qf.admin.dao.UserDao">
     <!--带条件查询出用户列表-->
-    <select id="listUsers" resultType="User">
+    <select id="listUsers" resultType="com.qf.admin.pojo.po.User">
         select *
         from user
         <where>
@@ -30,4 +30,128 @@
         delete from user
         where id=#{id}
     </delete>
+
+    <!--保存用户-->
+    <insert id="saveUser" parameterType="com.qf.admin.pojo.po.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="identity != null">
+                identity,
+            </if>
+            <if test="isadmin != null">
+                isadmin,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="img != null">
+                #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                #{identity,jdbcType=VARCHAR},
+            </if>
+            <if test="isadmin != null">
+                #{isadmin,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据主键查询用户-->
+    <select id="listUserById" parameterType="_int" resultType="com.qf.admin.pojo.po.User">
+        select *
+        from user
+        where id=#{id}
+    </select>
+
+    <!--根据更新用户信息-->
+    <update id="updateUser" parameterType="com.qf.admin.pojo.po.User">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="username != null">
+                username=#{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password=#{password,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday=#{birthday,jdbcType=DATE},
+            </if>
+            <if test="sex != null">
+                sex=#{sex,jdbcType=INTEGER},
+            </if>
+            <if test="img != null">
+                img=#{img,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country=#{country,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                profile=#{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                tel=#{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="identity != null">
+                #{identity,jdbcType=VARCHAR},
+            </if>
+            <if test="isadmin != null">
+                isadmin=#{isadmin,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status=#{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
 </mapper>

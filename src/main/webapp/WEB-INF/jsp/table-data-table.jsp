@@ -27,7 +27,8 @@
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
     <%--时间控件css--%>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 </head>
 <body class="app sidebar-mini rtl">
 <!-- Navbar-->
@@ -210,7 +211,7 @@
         </div>
     </div>
 
-    <%--添加模态框--%>
+    <%--添加模态框开始--%>
     <div class="modal fade" id="addModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -228,20 +229,23 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">密码</label>
-                            <input id="password" name="password" class="form-control" type="password" placeholder="请输入密码">
+                            <input id="password" name="password" class="form-control" type="password"
+                                   placeholder="请输入密码">
                         </div>
                         <div class="form-group">
                             <label class="control-label">出生日期</label>
-                            <input class="form-control" type="text" id="birthday">
+                            <input class="form-control" type="text" id="birthday" name="birthday">
                         </div>
                         <fieldset class="form-group">
                             <label class="control-label">性别</label>
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="optionsRadios1" type="radio" name="sex" value="0" checked="">男
+                                    <input class="form-check-input" id="optionsRadios1" type="radio" name="sex"
+                                           value="0" checked="">男
                                 </label>
                                 <label class="form-check-label" style="margin-left: 50px">
-                                    <input class="form-check-input" id="optionsRadios2" type="radio" name="sex" value="1">女
+                                    <input class="form-check-input" id="optionsRadios2" type="radio" name="sex"
+                                           value="1">女
                                 </label>
                             </div>
                         </fieldset>
@@ -259,8 +263,56 @@
             </div>
         </div>
     </div>
-
-
+    <%--添加模态框结束--%>
+    <%--编辑模态框开始--%>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <%--模态框头部--%>
+                <div class="modal-header">
+                    <h4 class="modal-title">编辑用户</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <%--模态框主体--%>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" name="id"/>
+                        <div class="form-group">
+                            <label class="control-label">用户名</label>
+                            <input name="username" class="form-control" type="text" placeholder="请填入用户名">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">出生日期</label>
+                            <input class="form-control" type="text" name="birthday">
+                        </div>
+                        <fieldset class="form-group">
+                            <label class="control-label">性别</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="sex"
+                                           value="0">男
+                                </label>
+                                <label class="form-check-label" style="margin-left: 50px">
+                                    <input class="form-check-input" type="radio" name="sex"
+                                           value="1">女
+                                </label>
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            <label class="control-label">国籍</label>
+                            <input class="form-control" type="text" name="country">
+                        </div>
+                    </form>
+                </div>
+                <%--模态框底部--%>
+                <div class="modal-footer">
+                    <button id="btnEditCommit" type="button" class="btn btn-primary">更改</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%--编辑模态框结束--%>
 </main>
 <!-- Essential javascripts for application to work-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -277,7 +329,7 @@
 <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
-    //转换日期格式(时间戳转换为datetime格式)
+    //转换日期格式(时间戳毫秒数转换为datetime格式)
     function changeDateFormat(cellval) {
         var dateVal = cellval + "";
         if (cellval != null) {
@@ -297,7 +349,23 @@
     //操作按钮事件
     window.operateEvents = {
         "click #btnEdit": function (e, value, row, index) {
+            $.get(
+                'user/' + row.id,
+                function (data) {
+                    $('#editForm [name=username]').val(data.username);
+                    $('#editForm [name=birthday]').val(changeDateFormat(data.birthday));
+                    $('#editForm [type=radio][value='+data.sex+']').attr("checked",true);
+                    $('#editForm [name=country]').val(data.country);
+                    $('#editForm [name=id]').val(data.id);
+                },
+                'json'
+            );
             //点击编辑按钮事件
+            var dialog = $('#editModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            dialog.modal('show');
         },
         "click #btnDelete": function (e, value, row, index) {
             //点击删除按钮事件
@@ -316,16 +384,21 @@
     };
     //页面加载内容
     $(function () {
-        //初始化日期控件
+        //初始化新增模态框日期控件
         $('#birthday').datetimepicker({
             format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn')
         });
+        //初始化编辑模态框日期控件
+        $('#editForm [name=birthday]').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn')
+        });
         //新增按钮点击事件
-        $("#btnAdd").click(function(){
+        $("#btnAdd").click(function () {
             var dialog = $('#addModal').modal({
-                backdrop : 'static',
-                keyboard : false
+                backdrop: 'static',
+                keyboard: false
             });
             dialog.modal('show');
         });
@@ -364,11 +437,35 @@
             paginationNextText: "下一页",
             sidePagination: 'server'
         });
-        //模态框中提交事件
-        $("#btnAddCommit").click(function(){
-            console.log($("#addForm").serialize())
+        //add模态框中提交事件
+        $("#btnAddCommit").click(function () {
+            $.post(
+                'user',
+                $("#addForm").serialize(),
+                function (data) {
+                    $('#addModal').modal('hide');
+                    if (data > 0) {
+                        $('#table').bootstrapTable(('refresh'));
+                    }
+                }
+            );
         });
+        //edit模态框中更改事件
+        $("#btnEditCommit").click(function(){
+            $.ajax({
+                url: 'user',
+                data: $("#editForm").serialize(),
+                type: 'PUT',
+                contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function (data) {
+                    $('#editModal').modal('hide');
+                    if (data > 0) {
+                        $('#table').bootstrapTable(('refresh'));
+                    }
+                }
+            });
 
+        });
     });
 </script>
 <!-- Google analytics script-->

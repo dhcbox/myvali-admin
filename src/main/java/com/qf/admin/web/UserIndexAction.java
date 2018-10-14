@@ -1,6 +1,7 @@
 package com.qf.admin.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qf.admin.pojo.po.User;
 import com.qf.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,26 @@ public class UserIndexAction {
     @RequestMapping(value = "/user/{id}",method = RequestMethod.DELETE)
     public int delete(@PathVariable int id){
         int i = userService.removeById(id);
+        return i;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    public int save(User user){
+        int i = userService.saveUser(user);
+        return i;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user/{id}",method = RequestMethod.GET)
+    public User select(@PathVariable int id){
+        return userService.listUserById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user",method = RequestMethod.PUT)
+    public int update(User user){
+        int i = userService.updateUser(user);
         return i;
     }
 }

@@ -29,4 +29,24 @@ public interface UserDao {
      * @return
      */
     int removeById(int id);
+
+    /**
+     * 保存用户
+     * @param user
+     * @return
+     */
+    int saveUser(User user);
+
+    /**
+     * 根据主键查询用户
+     * @param id
+     * @return
+     */
+    User listUserById(int id);
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
+    int updateUser(User user);
 }

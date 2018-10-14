@@ -1,11 +1,14 @@
 package com.qf.admin.pojo.po;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class User {
     private int id;
     private String username;
     private String password;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
     private int sex;
     private String img;
